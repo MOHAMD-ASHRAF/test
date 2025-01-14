@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -9,34 +10,28 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverAppBar(
-              pinned: true,
-             // floating: true,
-              backgroundColor: Colors.teal,
-            expandedHeight: 100.0,
-              flexibleSpace: FlexibleSpaceBar(
-                title: const Text('NestedScrollView'),
-              ),
-            ),
-          ],
-          body: ListView.builder(
-            itemCount: 101,
-            itemBuilder: (context, index) {
-              return SizedBox(
-                height: 100.0,
-                child: Shimmer.fromColors(
-                  baseColor: Colors.grey.shade300,
-                  highlightColor: Colors.grey.shade100,
-                  child: ListTile(
-                    leading: Container(height: 50.0, width: 50.0, color: Colors.grey.shade300),
-                    title: Container(height: 10.0, color: Colors.white),
-                    subtitle: SizedBox(child: Container(height: 10.0, color: Colors.white,width: 20,)),
-                  )
+                SliverAppBar(
+                  pinned: true,
+                  // floating: true,
+                  backgroundColor: Colors.teal,
+                  expandedHeight: 100.0,
+                  flexibleSpace: FlexibleSpaceBar(
+                    title: const Text('NestedScrollView'),
+                  ),
                 ),
-              );
-            },
-          )
-      ),
+              ],
+          body: Center(
+            child: ElevatedButton(
+                onPressed: () async {
+                  AudioCache audioCache=AudioCache();
+                  Uri uri = await audioCache.load('music/h.mp3');
+                  AudioPlayer player = AudioPlayer();
+                  await player.play(UrlSource(uri.toString()));
+                  // final player = AudioPlayer();
+                  // await player.play(UrlSource('assets/music/h.mp3'));
+                },
+                child: const Text('play')),
+          )),
     );
   }
 }
